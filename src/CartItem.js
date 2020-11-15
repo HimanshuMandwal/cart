@@ -8,34 +8,14 @@ class CartItem extends React.Component{
       Qty : 1,
       img: ''
     };
+    // this.testing();
   }
   increaseQuantity = () => {
-    console.log(`render`);
-    /*this.setState({Qty:this.state.Qty+1});
-    this.setState({Qty:this.state.Qty+1});
-    this.setState({Qty:this.state.Qty+1},()=>{});//call back function
-    this all three are merged shallowlly by react into single call that means on doing so the Qty is increased only by\
-    batching concept
-    */
-
-  //   this.setState((prevState)=>{
-  //   return{
-  //     Qty: prevState.Qty+1,
-  //   }
-  // });
-  // this.setState((prevState)=>{
-  //   return{
-  //     Qty: prevState.Qty+1,
-  //   }
-  // });
   this.setState((prevState)=>{
     return{
       Qty: prevState.Qty+1,
     }
-  },()=>{   //this second argument is called just after the first call ending this call back is awailable in both of the forms
-    console.log('this',this.state)
   });
-  // console.log('this ',this.state);this line is for checking wheather the setState calls are syncronous or asyncronous
   }
   decreaseQuantity = () => {
     this.setState((prevState)=>{
@@ -47,7 +27,23 @@ class CartItem extends React.Component{
       }
     })
   }
+  // testing(){
+  //   const promise = new Promise((resolve,reject)=>{
+  //     setTimeout(()=>{
+  //     resolve('Done');
+  //     },5000);
+  //   });
+  //   //here setState acts like syncronous call here
+  //   promise.then(()=>{
+  //     this.setState({Qty:this.state.Qty+10});
+  //     this.setState({Qty:this.state.Qty+10});//heree this testing call will increase the QTy by 30
+  //     this.setState({Qty:this.state.Qty+10});
+  //     console.log('this_state',this.state);
+  //   })
+
+  // }
   render(){
+    console.log('render')
     const { price,title,Qty,img } = this.state;
     return (
       <div className='cart-item'>
