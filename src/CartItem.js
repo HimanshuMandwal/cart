@@ -10,17 +10,42 @@ class CartItem extends React.Component{
     };
   }
   increaseQuantity = () => {
-  //  this.state.Qty+=1;//this will not work as it is not informing the react to update the value of Qty in react companent
+    console.log(`render`);
+    /*this.setState({Qty:this.state.Qty+1});
+    this.setState({Qty:this.state.Qty+1});
+    this.setState({Qty:this.state.Qty+1},()=>{});//call back function
+    this all three are merged shallowlly by react into single call that means on doing so the Qty is increased only by\
+    batching concept
+    */
 
-  // first form to setState
-  // this.setState({title:"Mobile phone ",}); //use this when there is no need of previous state
-
-  //second Form - if previous state is required use this form
+  //   this.setState((prevState)=>{
+  //   return{
+  //     Qty: prevState.Qty+1,
+  //   }
+  // });
+  // this.setState((prevState)=>{
+  //   return{
+  //     Qty: prevState.Qty+1,
+  //   }
+  // });
   this.setState((prevState)=>{
     return{
       Qty: prevState.Qty+1,
     }
-  })
+  },()=>{   //this second argument is called just after the first call ending this call back is awailable in both of the forms
+    console.log('this',this.state)
+  });
+  // console.log('this ',this.state);this line is for checking wheather the setState calls are syncronous or asyncronous
+  }
+  decreaseQuantity = () => {
+    this.setState((prevState)=>{
+      if(prevState.Qty>0)
+      {
+        return {
+          Qty: prevState.Qty-1,
+        }
+      }
+    })
   }
   render(){
     const { price,title,Qty,img } = this.state;
@@ -36,7 +61,7 @@ class CartItem extends React.Component{
           <div className='cart-item-actions'>
           {/* Buttons */}
           <img alt='increase' className='action-icons' src="https://www.flaticon.com/svg/static/icons/svg/1828/1828926.svg" onClick={this.increaseQuantity}/>
-          <img alt='decrease' className='action-icons' src="https://www.flaticon.com/svg/static/icons/svg/659/659892.svg" />
+          <img alt='decrease' className='action-icons' src="https://www.flaticon.com/svg/static/icons/svg/659/659892.svg" onClick={this.decreaseQuantity}/>
           <img alt='delete' className='action-icons' src="https://www.flaticon.com/svg/static/icons/svg/3096/3096673.svg"/>
           </div>
         </div>
