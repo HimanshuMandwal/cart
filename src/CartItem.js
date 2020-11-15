@@ -1,5 +1,4 @@
 import React from 'react';
-//this is a class based component whereas our App() is a functional component
 class CartItem extends React.Component{
   constructor(){
     super();
@@ -9,16 +8,22 @@ class CartItem extends React.Component{
       Qty : 1,
       img: ''
     };
-    // this.increaseQuantity = this.increaseQuantity.bind(this); this can be also be used to bind the function associated with a class
   }
   increaseQuantity = () => {
-    console.log('clicked increase')
+  //  this.state.Qty+=1;//this will not work as it is not informing the react to update the value of Qty in react companent
+
+  // first form to setState
+  // this.setState({title:"Mobile phone ",}); //use this when there is no need of previous state
+
+  //second Form - if previous state is required use this form
+  this.setState((prevState)=>{
+    return{
+      Qty: prevState.Qty+1,
+    }
+  })
   }
-  // increaseQuantity(){
-  //   console.log('this',this);//reference must be binded using this type of function code this.state.increaseQuantity.bind(this/object_name)
-  // }
   render(){
-    const { price,title,Qty,img } = this.state;//here we have used object destructuring
+    const { price,title,Qty,img } = this.state;
     return (
       <div className='cart-item'>
         <div className='left-block'>
