@@ -8,7 +8,6 @@ class CartItem extends React.Component{
       Qty : 1,
       img: ''
     };
-    // this.testing();
   }
   increaseQuantity = () => {
   this.setState((prevState)=>{
@@ -27,23 +26,7 @@ class CartItem extends React.Component{
       }
     })
   }
-  // testing(){
-  //   const promise = new Promise((resolve,reject)=>{
-  //     setTimeout(()=>{
-  //     resolve('Done');
-  //     },5000);
-  //   });
-  //   //here setState acts like syncronous call here
-  //   promise.then(()=>{
-  //     this.setState({Qty:this.state.Qty+10});
-  //     this.setState({Qty:this.state.Qty+10});//heree this testing call will increase the QTy by 30
-  //     this.setState({Qty:this.state.Qty+10});
-  //     console.log('this_state',this.state);
-  //   })
-
-  // }
   render(){
-    console.log('render')
     const { price,title,Qty,img } = this.state;
     return (
       <div className='cart-item'>
