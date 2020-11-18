@@ -9,6 +9,8 @@ class CartItem extends React.Component{
       img: ''
     };
   }
+  //when we deal with array element and want to perform same opertions on each element
+  //let say we want to add 5 to each array element we can use arr.map((element)=>{return element+5})
   increaseQuantity = () => {
   this.setState((prevState)=>{
     return{
