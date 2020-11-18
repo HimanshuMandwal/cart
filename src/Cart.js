@@ -1,3 +1,4 @@
+import { queryByPlaceholderText } from '@testing-library/react';
 import React from 'react';
 import CartItem from './CartItem';
 
@@ -11,19 +12,22 @@ class Cart extends React.Component{
           price : 2000,
           title: 'Watch',
           qty : 10,
-          img: ''
+          img: '',
+          id: 1
         },
         {
           price : 10000,
           title: 'phone',
           qty : 1,
-          img: ''
+          img: '',
+          id: 2
         },
         {
           price : 20000,
           title: 'laptop',
           qty : 3,
-          img: ''
+          img: '',
+          id: 3
         },
       ]
     };
@@ -50,6 +54,13 @@ class Cart extends React.Component{
     })
 
   };
+  handleDeleteProduct = (id) => {
+    const { products } = this.state;
+    const items = products.filter((item)=> item.id!==id);
+    this.setState({
+      products: items
+    })
+  };
   render(){
     const { products } = this.state;
     return(
@@ -60,6 +71,7 @@ class Cart extends React.Component{
                     key={product.id}
                     onIncreaseQuantity = {this.handleIncreaseQuantity}
                     onDecreaseQuantity = {this.handleDecreaseQuantity}
+                    onDeleteProduct = {this.handleDeleteProduct}
                   />
         })}
       </div>
