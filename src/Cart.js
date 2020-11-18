@@ -3,12 +3,41 @@ import CartItem from './CartItem';
 
 
 class Cart extends React.Component{
+  constructor(){
+    super();
+    this.state={
+      products :[
+        {
+          price : 2000,
+          title: 'Watch',
+          qty : 10,
+          img: ''
+        },
+        {
+          price : 10000,
+          title: 'phone',
+          qty : 1,
+          img: ''
+        },
+        {
+          price : 20000,
+          title: 'laptop',
+          qty : 3,
+          img: ''
+        },
+      ]
+    };
+
+  }
   render(){
-    var arr=[1,2,3,4,5];
+    const { products } = this.state;
     return(
       <div className='cart'>
-        {arr.map((item)=>{
-          return item+5;
+        {products.map((product)=> {
+          return  < CartItem
+                    product={product}
+                    key={product.id}
+                  />
         })}
       </div>
     )
