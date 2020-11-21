@@ -11,40 +11,19 @@ class App extends React.Component {
       products :[],
       loading: true,
     };
-
+    this.db = firebase.firestore(); //as we are going to use this many places so we take a shorthand for that as this.db  .
   }
   componentDidMount(){
-    // firebase
-    // .firestore()
-    // .collection('products')
-    // .get()
-    // .then((spashot)=>{
-    //   spashot.docs.map((doc)=>{
-    //     console.log(doc.data());
-    //   });
-
-    //   const products = spashot.docs.map((doc)=>{
-    //      const data=doc.data();//this is just the data inside each doc
-    //      data['id'] = doc.id;//this will get the unique id for each doc
-    //      return data;
-    //   });
-    //   this.setState({
-    //       products,
-    //       loading: false,
-    //     }
-    //   )
-    // });
-    firebase
-    .firestore()
+    this.db
     .collection('products')
-    .onSnapshot((spashot)=>{ //this method is used to automatically called when there is any change in firebase DB this is like a listner to the react APP
+    .onSnapshot((spashot)=>{
       spashot.docs.map((doc)=>{
         console.log(doc.data());
       });
 
       const products = spashot.docs.map((doc)=>{
-         const data=doc.data();//this is just the data inside each doc
-         data['id'] = doc.id;//this will get the unique id for each doc
+         const data=doc.data();
+         data['id'] = doc.id;
          return data;
       });
       this.setState({
@@ -55,25 +34,41 @@ class App extends React.Component {
     });
   }
   handleIncreaseQuantity = (product) => {
-    console.log('please increase the quantity');
     const { products } = this.state;
     const index = products.indexOf(product);
-    products[index].qty+=1;
-    this.setState({
-      products //this is sorthand for the products : products
+    // products[index].qty+=1;
+    // this.setState({
+    //   products //this is sorthand for the products : products
+    // })
+    const docRef = this.db.collection('products').doc(products[index].id);//this will give the reference of that particular
+    docRef.update({
+      qty:products[index].qty+1,
+    }).then(()=>{
+      console.log('Doc Updated successfully');
+    }).catch((error)=>{
+      console.log('Error :',error);
     })
 
   };
   handleDecreaseQuantity = (product) => {
-    console.log('please increase the quantity');
     const { products } = this.state;
     const index = products.indexOf(product);
-    if(products[index].qty>0)
-    products[index].qty-=1;
-    this.setState({
-      products //this is sorthand for the products : products
-    })
-
+    // if(products[index].qty>0)
+    // products[index].qty-=1;
+    // this.setState({
+    //   products //this is sorthand for the products : products
+    // })
+    const docRef = this.db.collection('products').doc(products[index].id);//this will give the reference of that particular
+   if(products[index].qty == 0){
+     return ;
+   }
+    docRef.update({
+      qty:products[index].qty-1,
+    }).then(()=>{
+      console.log('Doc Updated successfully');
+    }).catch((error)=>{
+      console.log('Error :',error);
+    });
   };
   handleDeleteProduct = (id) => {
     const { products } = this.state;
@@ -98,14 +93,25 @@ class App extends React.Component {
     });
     return count;
   }
+  addProduct = () => {
+    this.db.collection('products').add({
+      title: 'Washing Machine',
+      price:123124,
+      qty: 2,
+      img: '',
+    }).then((docRef) =>{
+      console.log('Product is added',docRef);
+    }).catch((error) => {
+      console.log('Error',error);
+    });
+  }
   render(){
-    //this count works fine without the need of the setstate because when we press onIncreaseQty then only
-    //the value of count is changed and at that time the handleIncQty use setstate which re-render whole of our app
   return (
     <div className="App">
       <Navbar
         count = {this.getCartCount()}
       />
+      <button onClick={this.addProduct} style={{padding: 20 , fontSize: 20}}>Add a Product</button>
       <Cart
         products = {this.state.products}
         onIncreaseQuantity = {this.handleIncreaseQuantity}
