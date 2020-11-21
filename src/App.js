@@ -14,11 +14,30 @@ class App extends React.Component {
 
   }
   componentDidMount(){
+    // firebase
+    // .firestore()
+    // .collection('products')
+    // .get()
+    // .then((spashot)=>{
+    //   spashot.docs.map((doc)=>{
+    //     console.log(doc.data());
+    //   });
+
+    //   const products = spashot.docs.map((doc)=>{
+    //      const data=doc.data();//this is just the data inside each doc
+    //      data['id'] = doc.id;//this will get the unique id for each doc
+    //      return data;
+    //   });
+    //   this.setState({
+    //       products,
+    //       loading: false,
+    //     }
+    //   )
+    // });
     firebase
     .firestore()
     .collection('products')
-    .get()
-    .then((spashot)=>{
+    .onSnapshot((spashot)=>{ //this method is used to automatically called when there is any change in firebase DB this is like a listner to the react APP
       spashot.docs.map((doc)=>{
         console.log(doc.data());
       });
