@@ -1,36 +1,39 @@
 import Cart from './Cart';
 import Navbar from './Navbar';
 import React from 'react';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
 
 class App extends React.Component {
   constructor(){
     super();
     this.state={
-      products :[
-        {
-          price : 2000,
-          title: 'Watch',
-          qty : 10,
-          img: '',
-          id: 1
-        },
-        {
-          price : 10000,
-          title: 'phone',
-          qty : 1,
-          img: '',
-          id: 2
-        },
-        {
-          price : 20000,
-          title: 'laptop',
-          qty : 3,
-          img: '',
-          id: 3
-        },
-      ]
+      products :[],
+      loading: true,
     };
 
+  }
+  componentDidMount(){
+    firebase
+    .firestore()
+    .collection('products')
+    .get()
+    .then((spashot)=>{
+      spashot.docs.map((doc)=>{
+        console.log(doc.data());
+      });
+
+      const products = spashot.docs.map((doc)=>{
+         const data=doc.data();//this is just the data inside each doc
+         data['id'] = doc.id;//this will get the unique id for each doc
+         return data;
+      });
+      this.setState({
+          products,
+          loading: false,
+        }
+      )
+    });
   }
   handleIncreaseQuantity = (product) => {
     console.log('please increase the quantity');
@@ -77,6 +80,8 @@ class App extends React.Component {
     return count;
   }
   render(){
+    //this count works fine without the need of the setstate because when we press onIncreaseQty then only
+    //the value of count is changed and at that time the handleIncQty use setstate which re-render whole of our app
   return (
     <div className="App">
       <Navbar
@@ -88,6 +93,7 @@ class App extends React.Component {
         onDecreaseQuantity = {this.handleDecreaseQuantity}
         onDeleteProduct = {this.handleDeleteProduct}
       />
+      {this.state.loading && <h1>Loading Products ...</h1>}
       <div style={{fontSize: 20, padding:10}}>TOTAL : {this.getTotalPrice()}</div>
 
     </div>
